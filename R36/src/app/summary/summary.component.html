@@ -1,0 +1,27 @@
+<nav role="navigation">
+  <ul>
+      <li><a (click)="logout()">Logout</a></li>
+      <li><a [routerLink]="['/dashboard']">Dashboard</a></li>
+      <li><a [routerLink]="['/summary']">Summary</a></li>
+      <li><a [routerLink]="['/reports']">Reports</a></li>
+  </ul>
+</nav>
+
+<article aria-describedby="Solar Energy Consumption Chart">
+  <h1 role="header">Solar Energy Consumption by Month</h1>
+  <h2 role="subheader">(Trillion Btu)</h2>
+  <p role="body" class="chart-container">
+      <canvas id="myChart" aria-label="Budget distribution chart"></canvas>
+  </p>
+</article>
+
+<article aria-describedby="Solar Energy Consumption Description">
+  <p role="body">
+    This data is from the Energy Information Administration (EIA).
+    The graph above depicts solar energy consumption from the first seven months of 2024.
+    It is measured in Trillion British thermal units which shows how much energy is being consumed.
+    This shows that we are on track to consume the highest amount of solar energy in recent years.
+  </p>
+  <p>
+    Source: <a href="https://www.eia.gov/totalenergy/data/monthly/pdf/sec10_11.pdf" target="_blank">Energy Information Administration (EIA)</a>
+</article>

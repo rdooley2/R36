@@ -1,0 +1,49 @@
+<nav role="navigation">
+  <ul>
+      <li><a (click)="logout()">Logout</a></li>
+      <li><a [routerLink]="['/dashboard']">Dashboard</a></li>
+      <li><a [routerLink]="['/summary']">Summary</a></li>
+      <li><a [routerLink]="['/reports']">Reports</a></li>
+  </ul>
+</nav>
+
+<article aria-describedby="Clean Energy Article">
+  <h1 role="header">Recent Innovations in Clean Energy</h1>
+  <h3 role="subheader">U.S. Energy Production Climbing Faster than Energy Consumption</h3>
+  <p role = "body">
+    According to the Energy Information Administration, EIA for short,
+    energy production in the United States has steadily increased
+    faster than energy consumption over the past fifty years.
+    In 1974, the United States was consuming more energy than it could produce.
+    To solve this, the United States relied on energy imports (buying energy from
+    other countries). As you might expect, buying energy from other countries
+    is not the most viable solution to the energy consumption problem. Over time,
+    the United States has slowly begun to make more energy than we can consume,
+    they even sell it to other countries now. As of 2024, energy production in
+    the United States is up sixty-eight percent compared to that of 1974. While
+    nonrenewable energy source consumption has increased due to new methods such as
+    hydraulic fracking and horizontal drilling, innovations in clean energy have also
+    made a significant impact. Since the 1990s the United States has steadily been investing
+    more into methods such as wind, solar, and hydropower. For example, solar energy has steadily
+    been increasing over the past two decades. More of this specific example can be seen
+    in the summary and report sections. Clean and Renewable Energy make up
+    approximately 11 percent of all United States energy consumption and 17.6 percent
+    of energy generation as of 2024.
+  </p>
+  <p>
+    Source: <a href="https://www.eia.gov/todayinenergy/detail.php?id=63544" target="_blank">Energy Information Administration (EIA)</a>
+  </p>
+</article>
+
+<article aria-describedby="Technical Overview Writeup">
+  <h1 role="header">Technical Overview:</h1>
+  <p role = "body">
+    As per the project instructions, my project utilizes Angular for
+    the front end and Node.js with Express for the back end. The Backend
+    uses MongoDB (Mongoose) to store data. The front end is served with
+    NGINX running on port 80 and the Backend running on port 3000. Authentication for
+    the Login Page is provided through the use of JSON Web Tokens (JWT).
+    The front end also includes dynamic charts which are populated by endpoints
+    in the Backend that fetch hardcoded data. Finally, the project incorporates
+    ADA/WCAG principles in the Frontend code.</p>.
+</article>

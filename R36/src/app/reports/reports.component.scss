@@ -1,0 +1,12 @@
+.chart-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 960px;
+  margin: auto;
+}
+
+svg {
+  width: 100%;
+  height: auto;
+}

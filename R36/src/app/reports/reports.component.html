@@ -1,0 +1,29 @@
+<nav role="navigation">
+  <ul>
+      <li><a (click)="logout()">Logout</a></li>
+      <li><a [routerLink]="['/dashboard']">Dashboard</a></li>
+      <li><a [routerLink]="['/summary']">Summary</a></li>
+      <li><a [routerLink]="['/reports']">Reports</a></li>
+  </ul>
+</nav>
+
+<article aria-describedby="Solar Energy Production Chart">
+  <h1 role="header">Solar Electricity Net Generation by Month</h1>
+  <h2 role="subheader">(Million Kilowatthours)</h2>
+  <p  role="body" class="chart-container">
+      <svg id="myChart2" width="960" height="450" aria-label="Budget distribution chart"></svg>
+  </p>
+</article>
+
+<article aria-describedby="Solar Energy Production Description">
+  <p role="body">
+    This data is from the Energy Information Administration (EIA).
+    The graph above depicts solar energy generation from the first seven months of 2024.
+    It is measured in Million Kilowatthours which shows how much energy is being created.
+    This shows that we are on track to generate the highest amount of solar energy in recent years.
+  </p>
+  <p>
+    Source: <a href="https://www.eia.gov/totalenergy/data/monthly/pdf/sec10_12.pdf" target="_blank">Energy Information Administration (EIA)</a>
+  </p>
+</article>
+
