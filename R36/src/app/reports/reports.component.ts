@@ -21,7 +21,7 @@ export class ReportsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.loadD3Chart();
+    this.loadBarGraph();
   }
 
   checkToken() {
@@ -36,92 +36,67 @@ export class ReportsComponent implements OnInit {
     this.router.navigate(['/']);
   }
 
-  private loadD3Chart(): void {
+  private loadBarGraph(): void {
     const token = localStorage.getItem('jwt');
-    this.http.get<ChartData[]>('http://localhost:3000/getChartData', {
+    this.http.get<{ summary: ChartData[], reports: ChartData[] }>('http://localhost:3000/getChartData', {
       headers: { Authorization: `Bearer ${token}` }
     }).subscribe(
-      () => {
-        const chartData: ChartData[] = [
-          { title: "January", value: 4782, color: "#FF6F61" },
-          { title: "February", value: 5417, color: "#6FA3EF" },
-          { title: "March", value: 7131, color: "#FFD93D" },
-          { title: "April", value: 7909, color: "#6BBE45" },
-          { title: "May", value: 8592, color: "#FF9A00" },
-          { title: "June", value: 8618, color: "#9B59B6" },
-          { title: "July", value: 8827, color: "#E74C3C" },
-        ];
+      (response) => {
+        const chartData = response.reports; // Use the "reports" data for the bar chart
 
-        const width = 960;
-        const height = 450;
-        const radius = Math.min(width, height) / 2;
+        const margin = { top: 20, right: 30, bottom: 40, left: 50 };
+        const width = 960 - margin.left - margin.right;
+        const height = 450 - margin.top - margin.bottom;
 
         const svg = d3.select("#myChart2")
-            .attr("width", width)
-            .attr("height", height)
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
             .append("g")
-            .attr("transform", `translate(${width / 2}, ${height / 2})`);
+            .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
-        const pie = d3.pie<ChartData>()
-            .value(d => d.value)
-            .sort(null);
-
-        const arc = d3.arc<d3.PieArcDatum<ChartData>>()
-            .outerRadius(radius * 0.8)
-            .innerRadius(radius * 0.4);
-
-        const outerArc = d3.arc<d3.PieArcDatum<ChartData>>()
-            .innerRadius(radius * 0.9)
-            .outerRadius(radius * 0.9);
-
-        const color = d3.scaleOrdinal<string>()
+        // Create scales
+        const x = d3.scaleBand()
             .domain(chartData.map(d => d.title))
-            .range(chartData.map(d => d.color));
+            .range([0, width])
+            .padding(0.1);
 
-        const slices = svg.selectAll("path.slice")
-            .data(pie(chartData))
+        const y = d3.scaleLinear()
+            .domain([0, d3.max(chartData, d => d.value) as number])
+            .nice()
+            .range([height, 0]);
+
+        // Add X axis
+        svg.append("g")
+            .attr("transform", `translate(0,${height})`)
+            .call(d3.axisBottom(x))
+            .selectAll("text")
+            .attr("transform", "rotate(-45)")
+            .style("text-anchor", "end");
+
+        // Add Y axis
+        svg.append("g")
+            .call(d3.axisLeft(y));
+
+        // Create bars
+        svg.selectAll(".bar")
+            .data(chartData)
             .enter()
-            .append("path")
-            .attr("class", "slice")
-            .attr("d", arc)
-            .style("fill", d => color(d.data.title));
+            .append("rect")
+            .attr("class", "bar")
+            .attr("x", d => x(d.title) as number)
+            .attr("y", d => y(d.value))
+            .attr("width", x.bandwidth())
+            .attr("height", d => height - y(d.value))
+            .attr("fill", d => d.color);
 
-        const text = svg.selectAll("text")
-            .data(pie(chartData))
-            .enter()
-            .append("text")
-            .attr("dy", ".35em")
-            .text(d => d.data.title)
-            .attr("transform", function (d) {
-                const pos = outerArc.centroid(d);
-                pos[0] = radius * (midAngle(d) < Math.PI ? 1.1 : -1.1);
-                return `translate(${pos})`;
-            })
-            .style("text-anchor", d => midAngle(d) < Math.PI ? "start" : "end");
-
-        svg.selectAll("polyline")
-            .data(pie(chartData))
-            .enter()
-            .append("polyline")
-            .attr("points", function (d) {
-                const pos = outerArc.centroid(d);
-                pos[0] = radius * 0.95 * (midAngle(d) < Math.PI ? 1 : -1);
-                return [arc.centroid(d), outerArc.centroid(d), pos]
-                    .map(p => p.join(",")).join(" ");
-            })
-            .style("stroke", "black")
-            .style("fill", "none")
-            .style("stroke-width", 1.5);
-
-        function midAngle(d: d3.PieArcDatum<ChartData>) {
-            return d.startAngle + (d.endAngle - d.startAngle) / 2;
-        }
       },
       (error) => {
         console.error('Error fetching chart data', error);
       }
     );
-}
+  }
+
+
 
 
 }

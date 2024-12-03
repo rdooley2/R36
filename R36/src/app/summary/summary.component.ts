@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { Chart, registerables } from 'chart.js';
 
 interface ChartData {
-  title: string;
+  labels: string;
   value: number;
   color: string;
 }
@@ -22,7 +22,7 @@ export class SummaryComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.loadChart();
+    this.loadPieChart();
   }
 
   checkToken() {
@@ -37,15 +37,16 @@ export class SummaryComponent implements OnInit {
     this.router.navigate(['/']);
   }
 
-  private loadChart(): void {
+  private loadPieChart(): void {
     const token = localStorage.getItem('jwt');
-    this.http.get<ChartData[]>('http://localhost:3000/getChartData', {
+    this.http.get<{ summary: ChartData[], reports: ChartData[] }>('http://localhost:3000/getChartData', {
       headers: { Authorization: `Bearer ${token}` }
     }).subscribe(
-      () => {
-        const labels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"];
-        const values = [20, 22, 30, 33, 36, 36, 37];
-        const colors = ["#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00", "#b15c75"];
+      (response) => {
+        const chartData = response.summary; // Use the "summary" data for the chart
+        const labels = chartData.map(d => d.labels);
+        const values = chartData.map(d => d.value);
+        const colors = chartData.map(d => d.color);
 
         const canvas = <HTMLCanvasElement>document.getElementById('myChart');
         const ctx = canvas?.getContext('2d');
@@ -74,6 +75,7 @@ export class SummaryComponent implements OnInit {
         console.error('Error fetching chart data', error);
       }
     );
-}
+  }
+
 }
 
