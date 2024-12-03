@@ -43,7 +43,7 @@ export class SummaryComponent implements OnInit {
       headers: { Authorization: `Bearer ${token}` }
     }).subscribe(
       (response) => {
-        const chartData = response.summary; // Use the "summary" data for the chart
+        const chartData = response.summary;
         const labels = chartData.map(d => d.labels);
         const values = chartData.map(d => d.value);
         const colors = chartData.map(d => d.color);

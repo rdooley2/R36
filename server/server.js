@@ -14,7 +14,6 @@ const setupDatabase = async () => {
 
         console.log("Ensuring 'r36' database and collections are created...");
 
-        // Define data for collections
         const summaryData = [
             { labels: "Jan", value: 20, color: "#8a89a6" },
             { labels: "Feb", value: 22, color: "#7b6888" },
@@ -35,7 +34,6 @@ const setupDatabase = async () => {
             { title: "July", value: 8827, color: "#E74C3C" },
         ];
 
-        // Ensure collections are created and populated
         const summaryCollection = await db.listCollections({ name: "summary" }).toArray();
         if (summaryCollection.length === 0) {
             console.log("Creating and populating 'summary' collection...");
@@ -60,7 +58,6 @@ const setupDatabase = async () => {
     }
 };
 
-// Connect to MongoDB with the correct database name
 mongoose.connect("mongodb://localhost:27017/r36")
     .then(async () => {
         console.log("Connected to MongoDB and using 'r36' database.");
@@ -71,10 +68,10 @@ mongoose.connect("mongodb://localhost:27017/r36")
     });
 
 app.use(cors({
-    origin: "http://localhost:4200", // Allow requests from this origin
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], // Allowed HTTP methods
-    allowedHeaders: ["Content-Type", "Authorization"], // Allowed headers
-    credentials: true, // Allow cookies and credentials
+    origin: "http://localhost:4200", 
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], 
+    allowedHeaders: ["Content-Type", "Authorization"], 
+    credentials: true, 
 }));
 
 app.use(bodyParser.json());

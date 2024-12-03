@@ -42,7 +42,7 @@ export class ReportsComponent implements OnInit {
       headers: { Authorization: `Bearer ${token}` }
     }).subscribe(
       (response) => {
-        const chartData = response.reports; // Use the "reports" data for the bar chart
+        const chartData = response.reports;
 
         const margin = { top: 20, right: 30, bottom: 40, left: 50 };
         const width = 960 - margin.left - margin.right;
@@ -54,7 +54,6 @@ export class ReportsComponent implements OnInit {
             .append("g")
             .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
-        // Create scales
         const x = d3.scaleBand()
             .domain(chartData.map(d => d.title))
             .range([0, width])
@@ -65,7 +64,6 @@ export class ReportsComponent implements OnInit {
             .nice()
             .range([height, 0]);
 
-        // Add X axis
         svg.append("g")
             .attr("transform", `translate(0,${height})`)
             .call(d3.axisBottom(x))
@@ -73,11 +71,9 @@ export class ReportsComponent implements OnInit {
             .attr("transform", "rotate(-45)")
             .style("text-anchor", "end");
 
-        // Add Y axis
         svg.append("g")
             .call(d3.axisLeft(y));
 
-        // Create bars
         svg.selectAll(".bar")
             .data(chartData)
             .enter()
@@ -88,7 +84,6 @@ export class ReportsComponent implements OnInit {
             .attr("width", x.bandwidth())
             .attr("height", d => height - y(d.value))
             .attr("fill", d => d.color);
-
       },
       (error) => {
         console.error('Error fetching chart data', error);
