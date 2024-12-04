@@ -84,7 +84,8 @@ mongoose.connect("mongodb://localhost:27017/r36")
     });
 
 app.use(cors({
-    origin: "http://localhost:4200",
+    // origin: "http://localhost:4200",
+    origin: "http://143.198.11.24",
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], 
     allowedHeaders: ["Content-Type", "Authorization"], 
     credentials: true, 
