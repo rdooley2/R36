@@ -8,6 +8,21 @@ const SECRET_KEY = 'secret_key';
 const mongoose = require("mongoose");
 const url = 'mongodb://localhost:27017';
 
+const summarySchema = new mongoose.Schema({
+    labels: String,
+    value: Number,
+    color: String,
+});
+
+const reportsSchema = new mongoose.Schema({
+    title: String,
+    value: Number,
+    color: String,
+});
+
+const summaryModel = mongoose.model('summary', summarySchema, 'summary');
+const reportsModel = mongoose.model('reports', reportsSchema, 'reports');
+
 const setupDatabase = async () => {
     try {
         const db = mongoose.connection.db;
@@ -58,6 +73,7 @@ const setupDatabase = async () => {
     }
 };
 
+
 mongoose.connect("mongodb://localhost:27017/r36")
     .then(async () => {
         console.log("Connected to MongoDB and using 'r36' database.");
@@ -68,7 +84,7 @@ mongoose.connect("mongodb://localhost:27017/r36")
     });
 
 app.use(cors({
-    origin: "http://localhost:4200", 
+    origin: "http://localhost:4200",
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], 
     allowedHeaders: ["Content-Type", "Authorization"], 
     credentials: true, 
@@ -108,10 +124,11 @@ app.get('/getChartData', authenticateJWT, async (req, res) => {
         const reportsData = await reportsModel.find({});
         res.json({ summary: summaryData, reports: reportsData });
     } catch (error) {
-        console.error(error);
+        console.error("Error fetching data in /getChartData:", error);
         res.status(500).send('Error fetching data');
     }
 });
+
 
 
 app.listen(port, () => {
