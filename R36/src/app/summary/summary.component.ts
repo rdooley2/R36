@@ -40,7 +40,7 @@ export class SummaryComponent implements OnInit {
   private loadPieChart(): void {
     const token = localStorage.getItem('jwt');
     //this.http.get<{ summary: ChartData[], reports: ChartData[] }>('http://localhost:3000/getChartData', {
-    this.http.get<{ summary: ChartData[], reports: ChartData[] }>('http://143.198.11.24:3000/getChartData', {
+    this.http.get<{ summary: ChartData[], reports: ChartData[] }>('http://142.93.205.43:3000/getChartData', {
       headers: { Authorization: `Bearer ${token}` }
     }).subscribe(
       (response) => {

@@ -22,7 +22,7 @@ export class LoginComponent {
       };
 
       //this.http.post<{ success: boolean, token: string }>('http://localhost:3000/api/login', data)
-      this.http.post<{ success: boolean, token: string }>('http://143.198.11.24:3000/api/login', data)
+      this.http.post<{ success: boolean, token: string }>('http://142.93.205.43:3000/api/login', data)
           .subscribe(res => {
               if (res && res.success) {
                   const token = res.token;
