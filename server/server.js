@@ -94,7 +94,9 @@ app.use(cors({
 app.use(bodyParser.json());
 
 const authenticateJWT = (req, res, next) => {
-    const token = req.header('Authorization')?.split(' ')[1];
+    // const token = req.header('Authorization')?.split(' ')[1];
+    const authHeader = req.header('Authorization');
+    const token = authHeader ? authHeader.split(' ')[1] : null;
     if (!token) return res.sendStatus(403); 
 
     jwt.verify(token, SECRET_KEY, (err, user) => {
